@@ -262,18 +262,22 @@ export class Controller implements vscode.Disposable {
     );
   }
 
-  /** Project = workspace folder of the given/active file (else the first folder). */
+  /**
+   * Project = workspace folder of the given/active file, else the first folder, else (no folder
+   * open) the directory of the active .py file.
+   */
   private resolveRunTarget(target?: vscode.Uri): RunTarget | undefined {
     const file = target ?? vscode.window.activeTextEditor?.document.uri;
     const folder =
       (file && vscode.workspace.getWorkspaceFolder(file)) ?? vscode.workspace.workspaceFolders?.[0];
-    if (!folder) {
+    const looseFile = file?.scheme === "file" && file.fsPath.endsWith(".py") ? file : undefined;
+    if (!folder && !looseFile) {
       void vscode.window.showErrorMessage(
         "Open a Follow Line project folder first (Robotics Academy: New Follow Line Project).",
       );
       return undefined;
     }
-    const projectDir = folder.uri.fsPath;
+    const projectDir = folder ? folder.uri.fsPath : path.dirname(looseFile!.fsPath);
     let entrypoint: string | undefined;
     if (file?.scheme === "file" && file.fsPath.endsWith(".py") && path.dirname(file.fsPath) === projectDir) {
       const name = path.basename(file.fsPath);

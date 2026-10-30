@@ -81,17 +81,32 @@ export function activate(context: vscode.ExtensionContext): ExtensionApi | undef
       groups: [{ size: 0.5 }, { size: 0.5, groups: [{ size: 0.55 }, { size: 0.45 }] }],
     });
     const folder = vscode.workspace.workspaceFolders?.[0];
-    if (folder) {
-      const entry = vscode.Uri.joinPath(folder.uri, exercise.manifest.entrypoint);
-      try {
-        await vscode.window.showTextDocument(entry, { viewColumn: vscode.ViewColumn.One, preview: false });
-      } catch {
-        // No entrypoint in this folder; leave the left group as is.
-      }
+    const ep = exercise.manifest.entrypoint;
+    // No folder open: show the sample project's code (Run uses the file's directory then).
+    const projectUri = folder?.uri ?? vscode.Uri.joinPath(context.extensionUri, "sample-workspace", exercise.manifest.id);
+    let failure: string | undefined;
+    try {
+      await vscode.window.showTextDocument(vscode.Uri.joinPath(projectUri, ep), { viewColumn: vscode.ViewColumn.One, preview: false });
+    } catch (err) {
+      failure = (err as Error).message;
     }
     VncPanel.show(gazebo, controller, context.extensionUri, vscode.ViewColumn.Two);
     VncPanel.show(console_, controller, context.extensionUri, vscode.ViewColumn.Three);
     WebGuiPanel.show(controller, context.extensionUri, vscode.ViewColumn.Three);
+    if (failure !== undefined) {
+      const why = `${ep} not found in ${folder ? folder.name : projectUri.fsPath}`;
+      log.warn(`[openLayout] Can't open ${ep}: ${why} (${failure})`);
+      const choice = await vscode.window.showWarningMessage(
+        `Can't open ${ep}: ${why}. Open your exercise folder (e.g. sample-workspace/follow_line) or create one with New Follow Line Project.`,
+        "Open Folder…",
+        "New Project",
+      );
+      if (choice === "Open Folder…") {
+        await vscode.commands.executeCommand("workbench.action.files.openFolder");
+      } else if (choice === "New Project") {
+        await newProject(exercise, context.extensionUri);
+      }
+    }
   });
 
   log.info(`Robotics Academy prototype active. Exercise: ${exercise.title}.`);
