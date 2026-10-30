@@ -121,7 +121,7 @@ export class RamClient extends Emitter<RamClientEvents> {
     } catch (err) {
       const noResponse =
         err instanceof RamError && (err.kind === "timeout" || err.kind === "closed") && !this._introspection;
-      this.close("connect failed");
+      void this.close("connect failed");
       if (noResponse) {
         throw new RamError(SINGLE_SLOT_MESSAGE, "busy", "connect");
       }
@@ -197,7 +197,10 @@ export class RamClient extends Emitter<RamClientEvents> {
     }
   }
 
-  /** Politely leave (RAM → idle) and close the socket. */
+  /**
+   * Politely leave (RAM → idle) and close the socket. Resolves once the close handshake is
+   * done, i.e. the server has freed its single client slot and a new connect can succeed.
+   */
   async disconnect(): Promise<void> {
     if (!this.ws) {
       return;
@@ -207,19 +210,33 @@ export class RamClient extends Emitter<RamClientEvents> {
     } catch {
       // Closing anyway.
     }
-    this.close("disconnected by user");
+    await this.close("disconnected by user");
   }
 
-  /** Close the socket immediately. Pending requests are rejected. */
-  close(reason = "closed"): void {
+  /**
+   * Close the socket. State and pending requests are settled immediately; the returned
+   * promise resolves when the socket is fully closed (or after 2 s).
+   */
+  close(reason = "closed"): Promise<void> {
     const ws = this.ws;
     if (!ws) {
-      return;
+      return Promise.resolve();
     }
     ws.removeAllListeners("close");
     ws.on("error", () => {});
+    const closed = new Promise<void>((resolve) => {
+      const t = setTimeout(() => {
+        ws.terminate();
+        resolve();
+      }, 2000);
+      ws.once("close", () => {
+        clearTimeout(t);
+        resolve();
+      });
+    });
     ws.close();
     this.handleClose(reason);
+    return closed;
   }
 
   private sendFrame(msg: RamMessage): void {

@@ -70,6 +70,14 @@ if (!fs.existsSync(settingsFile)) {
 }
 fs.mkdirSync(extensionsDir, { recursive: true });
 
+// VS Code creates "<user-data-dir>/<version>-main.sock"; macOS caps unix socket paths at 103 bytes.
+if (process.platform === "darwin" && path.join(userDataDir, "1.99-main.sock").length > 103) {
+  console.warn(
+    `Warning: ${userDataDir} is a deep path; VS Code may fail with "listen EINVAL ... main.sock".\n` +
+      "Clone the repo to a shorter path if the dev instance doesn't open.",
+  );
+}
+
 const codeArgs = [
   `--user-data-dir=${userDataDir}`,
   `--extensions-dir=${extensionsDir}`,

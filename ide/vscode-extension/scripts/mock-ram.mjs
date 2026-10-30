@@ -308,11 +308,15 @@ export function testImage(frame, w = 160, h = 120) {
   ]);
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// CLI entry. (import.meta.url is empty when this file is bundled into the integration test.)
+if (import.meta.url && process.argv[1] === fileURLToPath(import.meta.url)) {
   const arg = (name, def) => {
     const a = process.argv.find((x) => x.startsWith(`--${name}=`));
     return a ? Number(a.split("=")[1]) : def;
   };
   const quiet = process.argv.includes("--quiet");
-  await startMockRam({ port: arg("port", 7164), delay: arg("delay", 800), log: quiet ? () => {} : console.log });
+  startMockRam({ port: arg("port", 7164), delay: arg("delay", 800), log: quiet ? () => {} : console.log }).catch((err) => {
+    console.error(`[mock-ram] ${err.message}`);
+    process.exit(1);
+  });
 }

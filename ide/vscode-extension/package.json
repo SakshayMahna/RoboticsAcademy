@@ -19,26 +19,121 @@
   ],
   "contributes": {
     "commands": [
-      { "command": "roboticsAcademy.hello", "title": "Hello", "category": "Robotics Academy" },
-      { "command": "roboticsAcademy.connect", "title": "Connect", "category": "Robotics Academy", "icon": "$(plug)" },
-      { "command": "roboticsAcademy.disconnect", "title": "Disconnect", "category": "Robotics Academy", "icon": "$(debug-disconnect)" },
-      { "command": "roboticsAcademy.reconnect", "title": "Reconnect", "category": "Robotics Academy", "icon": "$(refresh)" },
-      { "command": "roboticsAcademy.launchWorld", "title": "Launch Exercise World", "category": "Robotics Academy", "icon": "$(globe)" },
-      { "command": "roboticsAcademy.stopWorld", "title": "Stop World", "category": "Robotics Academy", "icon": "$(close)" },
-      { "command": "roboticsAcademy.run", "title": "Run", "category": "Robotics Academy", "icon": "$(play)" },
-      { "command": "roboticsAcademy.pause", "title": "Pause", "category": "Robotics Academy", "icon": "$(debug-pause)" },
-      { "command": "roboticsAcademy.resume", "title": "Resume", "category": "Robotics Academy", "icon": "$(debug-continue)" },
-      { "command": "roboticsAcademy.stopApp", "title": "Stop App", "category": "Robotics Academy", "icon": "$(debug-stop)" },
-      { "command": "roboticsAcademy.restartRun", "title": "Restart Run", "category": "Robotics Academy", "icon": "$(debug-restart)" },
-      { "command": "roboticsAcademy.newProject", "title": "New Follow Line Project", "category": "Robotics Academy" },
-      { "command": "roboticsAcademy.showGazebo", "title": "Show Gazebo", "category": "Robotics Academy", "icon": "$(device-camera-video)" },
-      { "command": "roboticsAcademy.showConsole", "title": "Show Console", "category": "Robotics Academy", "icon": "$(terminal)" },
-      { "command": "roboticsAcademy.showWebGui", "title": "Show Web GUI", "category": "Robotics Academy", "icon": "$(device-desktop)" },
-      { "command": "roboticsAcademy.toggleWebGui", "title": "Toggle Web GUI", "category": "Robotics Academy", "icon": "$(eye)" },
-      { "command": "roboticsAcademy.openLayout", "title": "Open Exercise Layout", "category": "Robotics Academy", "icon": "$(layout)" },
-      { "command": "roboticsAcademy.resetBestLap", "title": "Reset Best Lap", "category": "Robotics Academy" },
-      { "command": "roboticsAcademy.showControls", "title": "Show Controls", "category": "Robotics Academy" },
-      { "command": "roboticsAcademy.showLog", "title": "Show Log", "category": "Robotics Academy" }
+      {
+        "command": "roboticsAcademy.hello",
+        "title": "Hello",
+        "category": "Robotics Academy"
+      },
+      {
+        "command": "roboticsAcademy.connect",
+        "title": "Connect",
+        "category": "Robotics Academy",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "roboticsAcademy.disconnect",
+        "title": "Disconnect",
+        "category": "Robotics Academy",
+        "icon": "$(debug-disconnect)"
+      },
+      {
+        "command": "roboticsAcademy.reconnect",
+        "title": "Reconnect",
+        "category": "Robotics Academy",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "roboticsAcademy.launchWorld",
+        "title": "Launch Exercise World",
+        "category": "Robotics Academy",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "roboticsAcademy.stopWorld",
+        "title": "Stop World",
+        "category": "Robotics Academy",
+        "icon": "$(close)"
+      },
+      {
+        "command": "roboticsAcademy.run",
+        "title": "Run",
+        "category": "Robotics Academy",
+        "icon": "$(play)"
+      },
+      {
+        "command": "roboticsAcademy.pause",
+        "title": "Pause",
+        "category": "Robotics Academy",
+        "icon": "$(debug-pause)"
+      },
+      {
+        "command": "roboticsAcademy.resume",
+        "title": "Resume",
+        "category": "Robotics Academy",
+        "icon": "$(debug-continue)"
+      },
+      {
+        "command": "roboticsAcademy.stopApp",
+        "title": "Stop App",
+        "category": "Robotics Academy",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "roboticsAcademy.restartRun",
+        "title": "Restart Run",
+        "category": "Robotics Academy",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "roboticsAcademy.newProject",
+        "title": "New Follow Line Project",
+        "category": "Robotics Academy"
+      },
+      {
+        "command": "roboticsAcademy.showGazebo",
+        "title": "Show Gazebo",
+        "category": "Robotics Academy",
+        "icon": "$(device-camera-video)"
+      },
+      {
+        "command": "roboticsAcademy.showConsole",
+        "title": "Show Console",
+        "category": "Robotics Academy",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "roboticsAcademy.showWebGui",
+        "title": "Show Web GUI",
+        "category": "Robotics Academy",
+        "icon": "$(device-desktop)"
+      },
+      {
+        "command": "roboticsAcademy.toggleWebGui",
+        "title": "Toggle Web GUI",
+        "category": "Robotics Academy",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "roboticsAcademy.openLayout",
+        "title": "Open Exercise Layout",
+        "category": "Robotics Academy",
+        "icon": "$(layout)"
+      },
+      {
+        "command": "roboticsAcademy.resetBestLap",
+        "title": "Reset Best Lap",
+        "category": "Robotics Academy"
+      },
+      {
+        "command": "roboticsAcademy.showControls",
+        "title": "Show Controls",
+        "category": "Robotics Academy"
+      },
+      {
+        "command": "roboticsAcademy.showLog",
+        "title": "Show Log",
+        "category": "Robotics Academy"
+      }
     ],
     "viewsContainers": {
       "activitybar": [
@@ -72,7 +167,10 @@
         }
       ],
       "commandPalette": [
-        { "command": "roboticsAcademy.hello", "when": "false" }
+        {
+          "command": "roboticsAcademy.hello",
+          "when": "false"
+        }
       ]
     },
     "configuration": {
@@ -114,7 +212,8 @@
     "mock-ram": "node scripts/mock-ram.mjs",
     "sync-helpers": "node scripts/sync-helpers.mjs",
     "test": "vitest run",
-    "package": "node esbuild.mjs --production && vsce package --no-dependencies --out dist/"
+    "package": "node esbuild.mjs --production && vsce package --no-dependencies --out dist/",
+    "test:integration": "node scripts/integration.mjs"
   },
   "dependencies": {
     "jszip": "^3.10.1",
