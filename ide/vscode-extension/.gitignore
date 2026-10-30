@@ -2,3 +2,6 @@ node_modules/
 dist/
 .vscode-dev/
 *.vsix
+
+# The repo root ignores .vscode; keep this extension's isolated launch config.
+!.vscode/

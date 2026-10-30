@@ -1,0 +1,21 @@
+{
+  // Only used when ide/vscode-extension itself is opened as the workspace.
+  // Same isolation as `npm run dev`: user data and extensions live in .vscode-dev/.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension (isolated)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--user-data-dir=${workspaceFolder}/.vscode-dev/user-data",
+        "--extensions-dir=${workspaceFolder}/.vscode-dev/extensions",
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--disable-extensions",
+        "${workspaceFolder}/sample-workspace/follow_line"
+      ],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "preLaunchTask": "npm: build"
+    }
+  ]
+}
