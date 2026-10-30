@@ -1,0 +1,32 @@
+{
+  "id": "follow_line",
+  "title": "Follow Line",
+  "world": {
+    "name": "Simple Circuit",
+    "scene": {
+      "name": "Simple Circuit",
+      "type": "gz",
+      "ros_version": "ROS2",
+      "launch_file_path": "/opt/jderobot/Launchers/simple_circuit.launch.py",
+      "tools_config": { "gzsim": "/opt/jderobot/Launchers/visualization/simple_circuit.config" }
+    },
+    "robot": [
+      {
+        "name": "F1 Holonomic Camera",
+        "type": "gz",
+        "ros_version": "ROS2",
+        "launch_file_path": "/home/ws/src/CustomRobots/f1/launch/f1.launch.py",
+        "entity": "f1",
+        "start_pose": [53.462, -10.734, 0.004, 0, 0, -1.57],
+        "extra_config": "mode:=holo sensor:=camera namespace:=f1"
+      }
+    ]
+  },
+  "tools": ["console", "simulator", "web_gui"],
+  "tools_config": { "gzsim": "/opt/jderobot/Launchers/visualization/simple_circuit.config" },
+  "helpers": ["HAL.py", "WebGUI.py", "lap.py", "Frequency.py"],
+  "common": ["console_interfaces", "gui_interfaces", "hal_interfaces"],
+  "entrypoint": "main.py",
+  "circuit": "default",
+  "panels": { "gazebo": 6080, "console": 6082, "webgui": true }
+}
