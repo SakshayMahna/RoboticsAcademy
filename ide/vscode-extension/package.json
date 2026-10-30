@@ -212,7 +212,7 @@
     "mock-ram": "node scripts/mock-ram.mjs",
     "sync-helpers": "node scripts/sync-helpers.mjs",
     "test": "vitest run",
-    "package": "node esbuild.mjs --production && vsce package --no-dependencies --out dist/",
+    "package": "node esbuild.mjs --production && vsce package --no-dependencies --skip-license --out dist/",
     "test:integration": "node scripts/integration.mjs"
   },
   "dependencies": {
@@ -227,5 +227,10 @@
     "esbuild": "^0.25.0",
     "typescript": "^5.6.0",
     "vitest": "^3.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JdeRobot/RoboticsAcademy.git",
+    "directory": "ide/vscode-extension"
   }
 }
