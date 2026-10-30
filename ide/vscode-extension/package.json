@@ -1,0 +1,132 @@
+{
+  "name": "robotics-academy-proto",
+  "displayName": "Robotics Academy (Prototype)",
+  "description": "Prototype VS Code workbench for JdeRobot Robotics Academy exercises, talking to a local Robotics Backend.",
+  "version": "0.0.1",
+  "publisher": "jderobot",
+  "private": true,
+  "license": "GPL-3.0",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Education",
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      { "command": "roboticsAcademy.hello", "title": "Hello", "category": "Robotics Academy" },
+      { "command": "roboticsAcademy.connect", "title": "Connect", "category": "Robotics Academy", "icon": "$(plug)" },
+      { "command": "roboticsAcademy.disconnect", "title": "Disconnect", "category": "Robotics Academy", "icon": "$(debug-disconnect)" },
+      { "command": "roboticsAcademy.reconnect", "title": "Reconnect", "category": "Robotics Academy", "icon": "$(refresh)" },
+      { "command": "roboticsAcademy.launchWorld", "title": "Launch Exercise World", "category": "Robotics Academy", "icon": "$(globe)" },
+      { "command": "roboticsAcademy.stopWorld", "title": "Stop World", "category": "Robotics Academy", "icon": "$(close)" },
+      { "command": "roboticsAcademy.run", "title": "Run", "category": "Robotics Academy", "icon": "$(play)" },
+      { "command": "roboticsAcademy.pause", "title": "Pause", "category": "Robotics Academy", "icon": "$(debug-pause)" },
+      { "command": "roboticsAcademy.resume", "title": "Resume", "category": "Robotics Academy", "icon": "$(debug-continue)" },
+      { "command": "roboticsAcademy.stopApp", "title": "Stop App", "category": "Robotics Academy", "icon": "$(debug-stop)" },
+      { "command": "roboticsAcademy.restartRun", "title": "Restart Run", "category": "Robotics Academy", "icon": "$(debug-restart)" },
+      { "command": "roboticsAcademy.newProject", "title": "New Follow Line Project", "category": "Robotics Academy" },
+      { "command": "roboticsAcademy.showGazebo", "title": "Show Gazebo", "category": "Robotics Academy", "icon": "$(device-camera-video)" },
+      { "command": "roboticsAcademy.showConsole", "title": "Show Console", "category": "Robotics Academy", "icon": "$(terminal)" },
+      { "command": "roboticsAcademy.showWebGui", "title": "Show Web GUI", "category": "Robotics Academy", "icon": "$(device-desktop)" },
+      { "command": "roboticsAcademy.toggleWebGui", "title": "Toggle Web GUI", "category": "Robotics Academy", "icon": "$(eye)" },
+      { "command": "roboticsAcademy.openLayout", "title": "Open Exercise Layout", "category": "Robotics Academy", "icon": "$(layout)" },
+      { "command": "roboticsAcademy.resetBestLap", "title": "Reset Best Lap", "category": "Robotics Academy" },
+      { "command": "roboticsAcademy.showControls", "title": "Show Controls", "category": "Robotics Academy" },
+      { "command": "roboticsAcademy.showLog", "title": "Show Log", "category": "Robotics Academy" }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "roboticsAcademy",
+          "title": "Robotics Academy",
+          "icon": "media/robot.svg"
+        }
+      ]
+    },
+    "views": {
+      "roboticsAcademy": [
+        {
+          "type": "webview",
+          "id": "roboticsAcademy.control",
+          "name": "Exercise"
+        }
+      ]
+    },
+    "menus": {
+      "editor/title": [
+        {
+          "command": "roboticsAcademy.run",
+          "group": "navigation@1",
+          "when": "resourceLangId == python && roboticsAcademy.state =~ /^(tools_ready|application_running|paused)$/"
+        },
+        {
+          "command": "roboticsAcademy.toggleWebGui",
+          "group": "navigation@1",
+          "when": "activeWebviewPanelId == 'roboticsAcademy.webgui'"
+        }
+      ],
+      "commandPalette": [
+        { "command": "roboticsAcademy.hello", "when": "false" }
+      ]
+    },
+    "configuration": {
+      "title": "Robotics Academy",
+      "properties": {
+        "roboticsAcademy.ramUrl": {
+          "type": "string",
+          "default": "ws://127.0.0.1:7163",
+          "description": "WebSocket URL of the Robotics Application Manager (RAM)."
+        },
+        "roboticsAcademy.host": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Host used for the noVNC panels (Gazebo, Console)."
+        },
+        "roboticsAcademy.exercise": {
+          "type": "string",
+          "default": "follow_line",
+          "description": "Exercise id (only follow_line is bundled in the prototype)."
+        },
+        "roboticsAcademy.lintOnRun": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ask RAM to pylint the entrypoint before running. RAM refuses to run on any lint error."
+        },
+        "roboticsAcademy.logGuiTraffic": {
+          "type": "boolean",
+          "default": false,
+          "description": "Also log web GUI traffic (gui start/ack and update frames) to the Output channel. Very noisy."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "dev": "node scripts/dev.mjs",
+    "mock-ram": "node scripts/mock-ram.mjs",
+    "sync-helpers": "node scripts/sync-helpers.mjs",
+    "test": "vitest run",
+    "package": "node esbuild.mjs --production && vsce package --no-dependencies --out dist/"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "~1.90.0",
+    "@types/ws": "^8.5.12",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0"
+  }
+}
